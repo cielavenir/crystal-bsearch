@@ -1,0 +1,10 @@
+name: bsearch
+version: 0.0.1
+
+authors:
+  - cielavenir <cielartisan@gmail.com>
+
+description: |
+  Binary Search: Range#bsearch, Array#bsearch, Array#bsearch_index
+
+license: Apache2
