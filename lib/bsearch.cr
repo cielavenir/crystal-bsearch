@@ -1,8 +1,11 @@
 struct Range(B, E)
-  #Perform binary search
-  #Based on Marc-André Lafortune's Ruby backports implementation, ported by @cielavenir
-
-  def bsearch
+  # By using binary search, finds a value in range which meets
+  # the given condition in O(log n) where n is the size of the range.
+  #
+  # If x is within the range, this method returns the value x. Otherwise, it returns nil.
+  #
+  # Based on Marc-André Lafortune's Ruby backports implementation, ported by @cielavenir
+  def bsearch(&block : B -> Int|Float|Bool?)
     #return to_enum(:bsearch) unless block_given?
     from = self.begin
     to   = self.end
@@ -18,7 +21,7 @@ struct Range(B, E)
     to -= 1 if excludes_end?
     satisfied = nil
     while from <= to
-      midpoint = (from + to)/2
+      midpoint = from + (to - from)/2
       result = yield(cur = convert.call)
       case result
       when Int
@@ -31,8 +34,6 @@ struct Range(B, E)
         satisfied = cur
       when nil, false
         # nothing to do
-      else
-        raise "wrong argument type #{result.class} (must be numeric, true, false or nil)"
       end
 
       if result
@@ -46,11 +47,14 @@ struct Range(B, E)
 end
 
 class Array(T)
-  def bsearch
-    idx=(0...self.size).bsearch{|i|yield self[i]}
+  # This method returns the i-th element. If i is equal to ary.size, it returns nil.
+  def bsearch(&block : T -> Int|Float|Bool?)
+    idx=bsearch_index(&block)
     idx ? self[idx] : nil
   end
-  def bsearch_index
+
+  # This method returns the index of the element instead of the element itself.
+  def bsearch_index(&block : T -> Int|Float|Bool?)
     (0...self.size).bsearch{|i|yield self[i]}
   end
 end

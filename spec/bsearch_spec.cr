@@ -6,10 +6,6 @@ require "./spec_helper"
 # https://github.com/ruby/ruby/blob/trunk/test/ruby/test_range.rb
 
 describe "Range#bsearch" do
-	it "raises" do
-		expect_raises{(1..42).bsearch{ "not ok" }}
-		expect_raises{("a".."z").bsearch {}}
-	end
 	it "Int" do
 		ary = [3, 4, 7, 9, 12]
 		(0...ary.size).bsearch{|i| ary[i] >= 2 }.should eq 0
@@ -31,9 +27,6 @@ describe "Range#bsearch" do
 end
 
 describe "Array#bsearch" do
-	it "raises" do
-		expect_raises{[1, 2, 42, 100, 666].bsearch{ "not ok" }}
-	end
 	it "minimum_mode" do
 		a = [0, 4, 7, 10, 12]
 		a.bsearch{|x| x >=   4 }.should eq 4
@@ -51,9 +44,6 @@ describe "Array#bsearch" do
 end
 
 describe "Array#bsearch_index" do
-	it "raises" do
-		expect_raises{[1, 2, 42, 100, 666].bsearch_index{ "not ok" }}
-	end
 	it "minimum_mode" do
 		a = [0, 4, 7, 10, 12]
 		a.bsearch_index{|x| x >=   4 }.should eq 1
