@@ -6,11 +6,9 @@ struct Range(B, E)
   #
   # Based on Marc-André Lafortune's Ruby backports implementation, ported by @cielavenir
   def bsearch(&block : B -> Int|Float|Bool?)
-    #return to_enum(:bsearch) unless block_given?
     from = self.begin
     to   = self.end
-    unless from.is_a?(Int) && to.is_a?(Int)
-      # Float support is currently dropped
+    unless from.is_a?(Number) && to.is_a?(Number)
       raise "can't do binary search for #{from.class}"
     end
 
@@ -24,10 +22,7 @@ struct Range(B, E)
       midpoint = from + (to - from)/2
       result = yield(cur = convert.call)
       case result
-      when Int
-        return cur if result == 0
-        result = result < 0
-      when Float
+      when Number
         return cur if result == 0
         result = result < 0
       when true
