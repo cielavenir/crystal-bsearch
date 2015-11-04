@@ -22,7 +22,7 @@ struct Range(B, E)
         v<0 ? -result : result
       }
       map_qD = ->(n : Int64) {
-        v = n.to_f64.abs
+        v = n.abs
         result = (pointerof(v) as Pointer(Float64)).value
         v<0 ? -result : result
       }
