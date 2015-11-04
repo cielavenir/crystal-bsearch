@@ -13,8 +13,23 @@ struct Range(B, E)
     end
 
     midpoint = 0 # placeholder
-    #convert = ->{ (pointerof(midpoint) as Pointer(Int64)).value }
-    convert = ->{ midpoint }
+    if from.is_a?(Int) && to.is_a?(Int)
+      convert = -> { midpoint }
+    else
+      map_Dq = ->(n : Float64) {
+        v = n.to_f64.abs
+        result = (pointerof(v) as Pointer(Int64)).value
+        v<0 ? -result : result
+      }
+      map_qD = ->(n : Int64) {
+        v = n.to_f64.abs
+        result = (pointerof(v) as Pointer(Float64)).value
+        v<0 ? -result : result
+      }
+      from = map_Dq.call(from.to_f64)
+      to = map_Dq.call(to.to_f64)
+      convert = -> { map_qD.call(midpoint.to_i64) }
+    end
 
     to -= 1 if excludes_end?
     satisfied = nil
